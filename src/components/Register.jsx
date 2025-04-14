@@ -4,6 +4,8 @@ import { useState, useContext } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../context/authContext"
 import NotificationContext from "/src/context/NotificationContext"
+import ThemeContext from "../context/ThemeContext"
+import LanguageContext from "../context/LanguageContext"
 import "../App.css"
 
 function Register() {
@@ -13,23 +15,25 @@ function Register() {
   const [loading, setLoading] = useState(false)
   const { register } = useAuth()
   const { addNotification } = useContext(NotificationContext)
+  const { darkMode } = useContext(ThemeContext)
+  const { t } = useContext(LanguageContext)
   const navigate = useNavigate()
 
   const handleRegister = async (e) => {
     e.preventDefault()
 
     if (!email || !password || !confirmPassword) {
-      addNotification("Please fill in all fields", "warning")
+      addNotification(t("notifications.fillAllFields"), "warning")
       return
     }
 
     if (password !== confirmPassword) {
-      addNotification("Passwords do not match", "error")
+      addNotification(t("auth.passwordsNoMatch"), "error")
       return
     }
 
     if (password.length < 6) {
-      addNotification("Password should be at least 6 characters", "warning")
+      addNotification(t("auth.passwordLength"), "warning")
       return
     }
 
@@ -46,16 +50,16 @@ function Register() {
   }
 
   return (
-    <div className="registerContainer">
+    <div className={`registerContainer ${darkMode ? "dark-theme" : ""}`}>
       <div className="registerCard">
         <img src="src/assets/TODO-ICON.png" />
-        <h1 className="registerTitle">Register</h1>
+        <h1 className="registerTitle">{t("auth.register")}</h1>
 
         <form onSubmit={handleRegister}>
           <div className="inputGroup">
             <input
               type="email"
-              placeholder="Email"
+              placeholder={t("auth.email")}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="inputField"
@@ -66,7 +70,7 @@ function Register() {
           <div className="inputGroup">
             <input
               type="password"
-              placeholder="Password"
+              placeholder={t("auth.password")}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="inputField"
@@ -77,31 +81,27 @@ function Register() {
           <div className="inputGroup">
             <input
               type="password"
-              placeholder="Confirm Password"
+              placeholder={t("auth.confirmPassword")}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               className="inputField"
               required
             />
             <>
-              {password !== confirmPassword && <p className="errorText">Passwords do not match</p>}
-              {password.length < 6 && password.length > 0 && <p className="errorText">Password should be at least 6 characters</p>}
+              {password !== confirmPassword && <p className="errorText">{t("auth.passwordsNoMatch")}</p>}
+              {password.length < 6 && password.length > 0 && <p className="errorText">{t("auth.passwordLength")}</p>}
             </>
           </div>
 
-          <button
-            type="submit"
-            className="registerButton"
-            disabled={loading}
-          >
-            {loading ? "Creating Account..." : "Register"}
+          <button type="submit" className="registerButton" disabled={loading}>
+            {loading ? t("auth.creatingAccount") : t("auth.register")}
           </button>
         </form>
 
         <p className="registerLink">
-          Already have an account?{" "}
+          {t("auth.haveAccount")}{" "}
           <a href="/login" className="hoverUnderline">
-            Login
+            {t("auth.login")}
           </a>
         </p>
       </div>
@@ -110,4 +110,3 @@ function Register() {
 }
 
 export default Register
-

@@ -1,50 +1,53 @@
 "use client"
 
-import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/authContext";
-import NotificationContext from "/src/context/NotificationContext";
-import '../App.css'; // Correct import path
+import { useState, useContext } from "react"
+import { useNavigate } from "react-router-dom"
+import { useAuth } from "../context/authContext"
+import NotificationContext from "/src/context/NotificationContext"
+import ThemeContext from "../context/ThemeContext"
+import LanguageContext from "../context/LanguageContext"
+import "../App.css"
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
-  const { addNotification } = useContext(NotificationContext);
-  const navigate = useNavigate();
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [loading, setLoading] = useState(false)
+  const { login } = useAuth()
+  const { addNotification } = useContext(NotificationContext)
+  const { darkMode } = useContext(ThemeContext)
+  const { t } = useContext(LanguageContext)
+  const navigate = useNavigate()
 
   const handleLogin = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (!email || !password) {
-      addNotification("Please enter both email and password", "warning");
-      return;
+      addNotification(t("notifications.fillAllFields"), "warning")
+      return
     }
 
     try {
-      setLoading(true);
-      await login(email, password);
-      addNotification("Login successful!", "success");
-      navigate("/dashboard"); // Redirect to /dashboard after successful login
+      setLoading(true)
+      await login(email, password)
+      navigate("/dashboard") // Redirect to /dashboard after successful login
     } catch (error) {
-      addNotification(error.message || "Failed to login. Please try again.", "error");
+      addNotification(error.message || "Failed to login. Please try again.", "error")
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
-    <div className="loginContainer">
+    <div className={`loginContainer ${darkMode ? "dark-theme" : ""}`}>
       <div className="loginCard">
-      <img src="src/assets/TODO-ICON.png" />
-        <h1 className="loginTitle">Login</h1>
+        <img src="src/assets/TODO-ICON.png" />
+        <h1 className="loginTitle">{t("auth.login")}</h1>
 
         <form onSubmit={handleLogin}>
           <div className="inputGroup">
             <input
               type="email"
-              placeholder="Email"
+              placeholder={t("auth.email")}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="inputField"
@@ -55,7 +58,7 @@ function Login() {
           <div className="inputGroup">
             <input
               type="password"
-              placeholder="Password"
+              placeholder={t("auth.password")}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="inputField"
@@ -63,21 +66,17 @@ function Login() {
             />
           </div>
 
-          <button
-            type="submit"
-            className="loginButton"
-            disabled={loading}
-          >
-            {loading ? "Logging in..." : "Login"}
+          <button type="submit" className="loginButton" disabled={loading}>
+            {loading ? t("auth.loggingIn") : t("auth.login")}
           </button>
         </form>
 
         <p className="registerLink">
-          Don't have an account? <a href="/register">Register</a>
+          {t("auth.noAccount")} <a href="/register">{t("auth.register")}</a>
         </p>
       </div>
     </div>
-  );
+  )
 }
 
-export default Login;
+export default Login
