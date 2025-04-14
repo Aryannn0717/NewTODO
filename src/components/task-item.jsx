@@ -3,11 +3,14 @@
 import { useContext, useState } from "react"
 import TaskContext from "../context/TaskContext"
 import NotificationContext from "/src/context/NotificationContext"
-import '../App.css';
+import LanguageContext from "../context/LanguageContext"
+
+import "../App.css"
 
 function TaskItem({ task }) {
   const { markCompleted, deleteTask, editTask } = useContext(TaskContext)
   const { addNotification } = useContext(NotificationContext)
+  const { t } = useContext(LanguageContext)
   const [editingTask, setEditingTask] = useState(false)
   const [editText, setEditText] = useState(task.title)
   const [editCategory, setEditCategory] = useState(task.category)
@@ -36,18 +39,18 @@ function TaskItem({ task }) {
     if (isValid) {
       setEditReminder(value)
     } else {
-      addNotification("Please use format like '30m' or '1h' for reminders", "warning")
+      addNotification(t("notifications.reminderFormat"), "warning")
     }
   }
 
   const handleSaveEdit = () => {
     if (!editText) {
-      addNotification("Task title cannot be empty", "warning")
+      addNotification(t("notifications.enterTitle"), "warning")
       return
     }
 
     if (!editDueDate) {
-      addNotification("Please select a due date", "warning")
+      addNotification(t("notifications.selectDueDate"), "warning")
       return
     }
 
@@ -59,13 +62,13 @@ function TaskItem({ task }) {
       reminder: editReminder,
     })
 
-    addNotification(`Task "${editText}" updated successfully`, "success")
+    addNotification(t("notifications.taskUpdated"), "success")
     setEditingTask(false)
   }
 
   const handleDeleteClick = () => {
     // Confirmation before deleting
-    if (window.confirm(`Are you sure you want to delete "${task.title}"?`)) {
+    if (window.confirm(`${t("tasks.confirmDelete")} "${task.title}"?`)) {
       deleteTask(task.id)
     }
   }
@@ -90,20 +93,20 @@ function TaskItem({ task }) {
             onChange={(e) => setEditCategory(e.target.value)}
             className="border p-2 w-full rounded mb-2"
           >
-            <option value="Work">Work</option>
-            <option value="Personal">Personal</option>
-            <option value="School">School</option>
-            <option value="Shopping">Shopping</option>
-            <option value="Health">Health</option>
+            <option value="Work">{t("categories.work")}</option>
+            <option value="Personal">{t("categories.personal")}</option>
+            <option value="School">{t("categories.school")}</option>
+            <option value="Shopping">{t("categories.shopping")}</option>
+            <option value="Health">{t("categories.health")}</option>
           </select>
           <select
             value={editPriority}
             onChange={(e) => setEditPriority(e.target.value)}
             className="border p-2 w-full rounded mb-2"
           >
-            <option value="1">Low</option>
-            <option value="2">Medium</option>
-            <option value="3">High</option>
+            <option value="1">{t("priorities.low")}</option>
+            <option value="2">{t("priorities.medium")}</option>
+            <option value="3">{t("priorities.high")}</option>
           </select>
           <input
             type="date"
@@ -113,17 +116,17 @@ function TaskItem({ task }) {
           />
           <input
             type="text"
-            placeholder="Reminder"
+            placeholder={t("tasks.reminder")}
             value={editReminder}
             onChange={(e) => validateReminder(e.target.value)}
             className="border p-2 w-full rounded mb-2"
           />
           <div className="flex gap-2">
             <button onClick={handleSaveEdit} className="bg-blue-500 text-white px-3 py-1 rounded">
-              Save
+              {t("tasks.save")}
             </button>
             <button onClick={() => setEditingTask(false)} className="bg-gray-500 text-white px-3 py-1 rounded">
-              Cancel
+              {t("tasks.cancel")}
             </button>
           </div>
         </div>
@@ -138,10 +141,10 @@ function TaskItem({ task }) {
         {!editingTask && (
           <>
             <button onClick={handleEditClick} className="bg-yellow-500 text-white px-3 py-1 rounded mr-2">
-              Edit
+              {t("tasks.edit")}
             </button>
             <button onClick={handleDeleteClick} className="bg-red-500 text-white px-3 py-1 rounded">
-              Delete
+              {t("tasks.delete")}
             </button>
           </>
         )}
@@ -151,4 +154,3 @@ function TaskItem({ task }) {
 }
 
 export default TaskItem
-
