@@ -68,7 +68,7 @@ select:focus {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: 5vh;
   background-color: var(--gray-50);
   padding: 1rem;
 }
@@ -474,15 +474,16 @@ select:focus {
 }
 
 .app-header {
-  background-color: #f0f0f0; /* Light gray header background */
+  background-color: #707070; /* Light gray header background */
   padding: 1rem 2rem;
   text-align: center;
   box-shadow: var(--shadow-sm);
+  width: 500%;
 }
 
 .app-header h1 {
   margin-bottom: 0.5rem;
-  color: var(--primary);
+  color: White;
 }
 
 .app-main {
@@ -495,7 +496,7 @@ select:focus {
 
 .main-container {
   width: 100%;
-  max-width: 1200px; /* Adjust this value to your desired maximum width */
+  max-width: 10px; /* Adjust this value to your desired maximum width */
   margin: 0 auto; /* Center the container horizontally (alternative to justify-content on app-main) */
 }
 
@@ -523,3 +524,93 @@ select:focus {
 .taskListContainer.row-container .taskItem:last-child {
   margin-right: 0; /* Remove margin from the last item in the row */
 } 
+
+/* Add these dark mode styles to your existing CSS */
+
+/* Base styles for dark mode */
+body.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+/* Dark mode for containers */
+.dark-mode .loginContainer,
+.dark-mode .registerContainer,
+.dark-mode .dashboardContainer {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+}
+
+/* Dark mode for cards */
+.dark-mode .loginCard,
+.dark-mode .registerCard {
+  background-color: #2d2d2d;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* Dark mode for inputs */
+.dark-mode .inputField,
+.dark-mode .taskInput,
+.dark-mode .taskSelect,
+.dark-mode .filterSelect {
+  background-color: #3d3d3d;
+  color: #e0e0e0;
+  border-color: #555;
+}
+
+/* Dark mode for task items */
+.dark-mode .taskListContainer > div {
+  background-color: #2d2d2d !important;
+  border-color: #555 !important;
+}
+
+/* Dark mode for filter container */
+.dark-mode .filterContainer {
+  background-color: #2d2d2d;
+  border-color: #555;
+}
+
+/* Dark mode for task form container */
+.dark-mode .taskFormContainer {
+  background-color: #2d2d2d !important;
+  border-color: #555 !important;
+}
+
+/* Dark mode for buttons - keep their colors but adjust for better contrast */
+.dark-mode button {
+  border-color: #555;
+}
+
+/* Dark mode for links */
+.dark-mode a {
+  color: #90caf9;
+}
+
+/* Dark mode toggle button */
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.dark-mode .theme-toggle {
+  background-color: #333;
+}
+
+/* Completed tasks in dark mode */
+.dark-mode .line-through {
+  color: #888 !important;
+}

@@ -4,6 +4,7 @@ import { useState, useContext } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../context/authContext"
 import NotificationContext from "/src/context/NotificationContext"
+import ThemeContext from "../context/ThemeContext"
 import "../App.css"
 
 function Register() {
@@ -13,6 +14,7 @@ function Register() {
   const [loading, setLoading] = useState(false)
   const { register } = useAuth()
   const { addNotification } = useContext(NotificationContext)
+  const { darkMode } = useContext(ThemeContext)
   const navigate = useNavigate()
 
   const handleRegister = async (e) => {
@@ -46,7 +48,7 @@ function Register() {
   }
 
   return (
-    <div className="registerContainer">
+    <div className={`registerContainer ${darkMode ? "dark-theme" : ""}`}>
       <div className="registerCard">
         <img src="src/assets/TODO-ICON.png" />
         <h1 className="registerTitle">Register</h1>
@@ -85,15 +87,13 @@ function Register() {
             />
             <>
               {password !== confirmPassword && <p className="errorText">Passwords do not match</p>}
-              {password.length < 6 && password.length > 0 && <p className="errorText">Password should be at least 6 characters</p>}
+              {password.length < 6 && password.length > 0 && (
+                <p className="errorText">Password should be at least 6 characters</p>
+              )}
             </>
           </div>
 
-          <button
-            type="submit"
-            className="registerButton"
-            disabled={loading}
-          >
+          <button type="submit" className="registerButton" disabled={loading}>
             {loading ? "Creating Account..." : "Register"}
           </button>
         </form>
@@ -110,4 +110,3 @@ function Register() {
 }
 
 export default Register
-
